@@ -1,0 +1,51 @@
+[gd_scene load_steps=8 format=3 uid="uid://dwr7h2gy7kusr"]
+
+[ext_resource type="Script" path="res://characters/Player.gd" id="1_gcwwj"]
+[ext_resource type="PackedScene" uid="uid://dnd3m42gc1re8" path="res://characters/sweeper.tscn" id="2_fkd81"]
+[ext_resource type="Script" path="res://characters/PrincipalSpringArm.gd" id="3_v0c7v"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_igugq"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_jtiw8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v2aw8"]
+albedo_color = Color(0.682353, 0.541176, 0.113725, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_vv8lv"]
+material = SubResource("StandardMaterial3D_v2aw8")
+size = Vector3(0.2, 0.2, 1.5)
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_gcwwj")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_igugq")
+
+[node name="Pivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Pivot"]
+mesh = SubResource("CapsuleMesh_jtiw8")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -0.8)
+mesh = SubResource("BoxMesh_vv8lv")
+
+[node name="Sweeper" parent="Pivot" instance=ExtResource("2_fkd81")]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0.692795, 0, 0)
+
+[node name="PrincipalSpringArm" type="SpringArm3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+spring_length = 8.0
+margin = 0.5
+script = ExtResource("3_v0c7v")
+
+[node name="PrincipalCamera" type="Camera3D" parent="PrincipalSpringArm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7)
+current = true
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.5
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

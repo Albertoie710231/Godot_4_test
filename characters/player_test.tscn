@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://bm62kdqsvwmf8"]
+
+[ext_resource type="Script" path="res://characters/player_test.gd" id="1_2go8w"]
+[ext_resource type="Script" path="res://characters/PrincipalSpringArm.gd" id="1_xamsf"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gqbhs"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ill7o"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_3501o"]
+size = Vector3(0.1, 0.1, 1)
+
+[node name="Player_test" type="RigidDynamicBody3D"]
+lock_rotation = true
+script = ExtResource("1_2go8w")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_gqbhs")
+
+[node name="Pivot" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Pivot"]
+mesh = SubResource("CapsuleMesh_ill7o")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, -0.5)
+mesh = SubResource("BoxMesh_3501o")
+
+[node name="PrincipalSpringArm" type="SpringArm3D" parent="."]
+spring_length = 7.0
+margin = 0.5
+script = ExtResource("1_xamsf")
+
+[node name="PrincipalCamera" type="Camera3D" parent="PrincipalSpringArm"]
+current = true
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
