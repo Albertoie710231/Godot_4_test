@@ -1,7 +1,10 @@
 [gd_scene load_steps=11 format=3 uid="uid://wmhrk4pxprpc"]
 
 [ext_resource type="Texture2D" uid="uid://c5bo1wx1bic3g" path="res://texture_08.png" id="1_5kakw"]
+[ext_resource type="Script" path="res://world.gd" id="1_a2261"]
 [ext_resource type="PackedScene" uid="uid://dwr7h2gy7kusr" path="res://characters/player.tscn" id="2_ju63i"]
+[ext_resource type="PackedScene" uid="uid://bagcox4t3fa7k" path="res://TrashCan.tscn" id="3_4kxc4"]
+[ext_resource type="PackedScene" uid="uid://dv20l538ka808" path="res://TrashBall.tscn" id="4_kqbsy"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_52fv5"]
 sky_top_color = Color(0.152941, 0.490196, 0.619608, 1)
@@ -23,17 +26,11 @@ albedo_texture = ExtResource("1_5kakw")
 uv1_scale = Vector3(0.2, 0.2, 0.2)
 uv1_triplanar = true
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_h86sn"]
-height = 1.5
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_vbpt3"]
-height = 1.5
-
-[sub_resource type="SphereMesh" id="SphereMesh_wsddb"]
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_xfv4i"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_sq4kv"]
+size = Vector3(94, 1, 108)
 
 [node name="World" type="Node3D"]
+script = ExtResource("1_a2261")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_sjhgo")
@@ -55,24 +52,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, -27)
 size = Vector3(24, 20, 6.54734)
 material = SubResource("StandardMaterial3D_nokmp")
 
-[node name="RigidDynamicBody3D" type="RigidDynamicBody3D" parent="." groups=["bodies"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.23281, 1.83099, 0)
+[node name="RigidDynamicBody3D" parent="." instance=ExtResource("3_4kxc4")]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidDynamicBody3D"]
-mesh = SubResource("CylinderMesh_h86sn")
-skeleton = NodePath("../..")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidDynamicBody3D"]
-shape = SubResource("CylinderShape3D_vbpt3")
-
-[node name="RigidDynamicBody3D2" type="RigidDynamicBody3D" parent="." groups=["bodies"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.49769, 3.83099, 0)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidDynamicBody3D2"]
-mesh = SubResource("SphereMesh_wsddb")
-skeleton = NodePath("../..")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidDynamicBody3D2"]
-shape = SubResource("SphereShape3D_xfv4i")
+[node name="RigidDynamicBody3D2" parent="." instance=ExtResource("4_kqbsy")]
 
 [node name="Player" parent="." instance=ExtResource("2_ju63i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -23, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_sq4kv")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://dv20l538ka808"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_wsddb"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_xfv4i"]
+
+[node name="RigidDynamicBody3D2" type="RigidDynamicBody3D" groups=["bodies"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.49769, 3.83099, 0)
+top_level = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_wsddb")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_xfv4i")

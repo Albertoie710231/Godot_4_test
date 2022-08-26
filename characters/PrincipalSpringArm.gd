@@ -9,10 +9,10 @@ var camera_v = 0.0
 #@onready var _spring_arm = $PrincipalSpringArm
 
 # Called when the node enters the scene tree for the first time.
-func _ready():
+func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
-func _unhandled_input(event):
+func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
@@ -25,5 +25,5 @@ func _unhandled_input(event):
 			camera_h = wrapf(camera_h, deg2rad(0), deg2rad(360))
 			rotation.y = camera_h
 			camera_v -= event.relative.y * mouse_sensitivity
-			camera_v = clamp(camera_v, deg2rad(-60), deg2rad(30))
+			camera_v = clamp(camera_v, deg2rad(-80), deg2rad(30))
 			rotation.x = camera_v

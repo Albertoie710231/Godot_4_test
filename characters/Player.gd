@@ -28,7 +28,7 @@ var state = player_state.IDLE
 
 var double_jump_flag : bool = false
 
-func _physics_process(delta) -> void:
+func _physics_process(delta:float) -> void:
 	movement(delta)
 	if velocity == Vector3.ZERO:
 		state = player_state.IDLE
