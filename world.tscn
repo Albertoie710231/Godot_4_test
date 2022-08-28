@@ -1,10 +1,12 @@
-[gd_scene load_steps=11 format=3 uid="uid://wmhrk4pxprpc"]
+[gd_scene load_steps=13 format=3 uid="uid://wmhrk4pxprpc"]
 
 [ext_resource type="Texture2D" uid="uid://c5bo1wx1bic3g" path="res://texture_08.png" id="1_5kakw"]
 [ext_resource type="Script" path="res://world.gd" id="1_a2261"]
 [ext_resource type="PackedScene" uid="uid://dwr7h2gy7kusr" path="res://characters/player.tscn" id="2_ju63i"]
-[ext_resource type="PackedScene" uid="uid://bagcox4t3fa7k" path="res://TrashCan.tscn" id="3_4kxc4"]
+[ext_resource type="PackedScene" uid="uid://b20m8njwfgoxj" path="res://TrashCan.tscn" id="3_4kxc4"]
 [ext_resource type="PackedScene" uid="uid://dv20l538ka808" path="res://TrashBall.tscn" id="4_kqbsy"]
+[ext_resource type="PackedScene" uid="uid://dnd3m42gc1re8" path="res://characters/sweeper.tscn" id="6_t2whs"]
+[ext_resource type="Script" path="res://characters/PrincipalSpringArm.gd" id="7_jseis"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_52fv5"]
 sky_top_color = Color(0.152941, 0.490196, 0.619608, 1)
@@ -52,17 +54,56 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, -27)
 size = Vector3(24, 20, 6.54734)
 material = SubResource("StandardMaterial3D_nokmp")
 
-[node name="RigidDynamicBody3D" parent="." instance=ExtResource("3_4kxc4")]
-
-[node name="RigidDynamicBody3D2" parent="." instance=ExtResource("4_kqbsy")]
-
-[node name="Player" parent="." instance=ExtResource("2_ju63i")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-
 [node name="Area3D" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -23, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("BoxShape3D_sq4kv")
 
+[node name="Player" parent="." instance=ExtResource("2_ju63i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="RemoteTransform3D2" type="RemoteTransform3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+remote_path = NodePath("../../PrincipalSpringArm")
+update_rotation = false
+update_scale = false
+
+[node name="PivotRemoteTransform" type="Node3D" parent="Player"]
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="Player/PivotRemoteTransform"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.833227, 1, 0)
+remote_path = NodePath("../../../Sweeper")
+update_scale = false
+
+[node name="TrashBall" parent="." instance=ExtResource("4_kqbsy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.92338, 3, 0)
+
+[node name="TrashBall2" parent="." instance=ExtResource("4_kqbsy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.92338, 3, -3)
+
+[node name="TrashBall3" parent="." instance=ExtResource("4_kqbsy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.92338, 3, 4)
+
+[node name="TrashCan" parent="." instance=ExtResource("3_4kxc4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 1, 2)
+
+[node name="TrashCan2" parent="." instance=ExtResource("3_4kxc4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 1, 0)
+
+[node name="TrashCan3" parent="." instance=ExtResource("3_4kxc4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 1, -8)
+
+[node name="Sweeper" parent="." instance=ExtResource("6_t2whs")]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.800001, 0.833227, 2, 0)
+
+[node name="PrincipalSpringArm" type="SpringArm3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+spring_length = 7.0
+margin = 0.5
+script = ExtResource("7_jseis")
+
+[node name="PrincipalCamera" type="Camera3D" parent="PrincipalSpringArm"]
+
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="sweep_signal" from="Sweeper" to="Player" method="_on_sweeper_sweep_signal"]

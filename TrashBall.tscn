@@ -1,12 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://dv20l538ka808"]
+[gd_scene load_steps=4 format=3 uid="uid://dv20l538ka808"]
+
+[ext_resource type="Script" path="res://TrashCan.gd" id="1_tek2u"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_wsddb"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_xfv4i"]
 
-[node name="RigidDynamicBody3D2" type="RigidDynamicBody3D" groups=["bodies"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.49769, 3.83099, 0)
+[node name="TrashBall" type="RigidDynamicBody3D" groups=["bodies"]]
 top_level = true
+script = ExtResource("1_tek2u")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_wsddb")

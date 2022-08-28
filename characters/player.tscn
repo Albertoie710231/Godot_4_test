@@ -1,8 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://dwr7h2gy7kusr"]
+[gd_scene load_steps=6 format=3 uid="uid://dwr7h2gy7kusr"]
 
 [ext_resource type="Script" path="res://characters/Player.gd" id="1_gcwwj"]
-[ext_resource type="PackedScene" uid="uid://dnd3m42gc1re8" path="res://characters/sweeper.tscn" id="2_fkd81"]
-[ext_resource type="Script" path="res://characters/PrincipalSpringArm.gd" id="3_v0c7v"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_igugq"]
 
@@ -34,20 +32,6 @@ mesh = SubResource("BoxMesh_vv8lv")
 
 [node name="PivotSweeper" type="Node3D" parent="Pivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
-
-[node name="Sweeper" parent="Pivot/PivotSweeper" node_paths=PackedStringArray("_camera") instance=ExtResource("2_fkd81")]
-transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0.692795, 1, 0)
-_camera = NodePath("../../../PrincipalSpringArm")
-
-[node name="PrincipalSpringArm" type="SpringArm3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
-spring_length = 8.0
-margin = 0.5
-script = ExtResource("3_v0c7v")
-
-[node name="PrincipalCamera" type="Camera3D" parent="PrincipalSpringArm"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7)
-current = true
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 2.5

@@ -4,7 +4,7 @@ var camera_h = 0.0
 var camera_v = 0.0
 
 @export var mouse_sensitivity := 0.005
-@export var controller_sesitivity = 0.1
+@export var controller_sesitivity = 5
 
 #@onready var _spring_arm = $PrincipalSpringArm
 
@@ -25,5 +25,15 @@ func _unhandled_input(event: InputEvent) -> void:
 			camera_h = wrapf(camera_h, deg2rad(0), deg2rad(360))
 			rotation.y = camera_h
 			camera_v -= event.relative.y * mouse_sensitivity
-			camera_v = clamp(camera_v, deg2rad(-80), deg2rad(30))
+			camera_v = clamp(camera_v, deg2rad(-60), deg2rad(30))
 			rotation.x = camera_v
+
+func _process(delta):
+	var input_dir = Input.get_vector("rotate_camera_left", "rotate_camera_right", "rotate_camera_up", "rotate_camera_down").normalized()
+	if input_dir:
+		camera_h -= input_dir.x * delta * controller_sesitivity
+		camera_h = wrapf(camera_h, deg2rad(0), deg2rad(360))
+		rotation.y = camera_h
+		camera_v -= input_dir.y * delta * controller_sesitivity
+		camera_v = clamp(camera_v, deg2rad(-60), deg2rad(30))
+		rotation.x = camera_v

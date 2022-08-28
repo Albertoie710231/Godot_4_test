@@ -4,9 +4,11 @@ extends CharacterBody3D
 const SPEED = 7.0
 const JUMP_VELOCITY = 7.0
 
-var inertia = 30
+var inertia : float = 30.0
+var air_time : float = 0.0
 var jump_velocity : float = 0.0
 var wall_flag : bool = false
+var sweep_mode_flag = false
 var wall_normal : Vector3 = Vector3.ZERO
 # Get the gravity from the project settings to be synced with RigidDynamicBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -22,11 +24,18 @@ enum player_state{
 
 var state = player_state.IDLE
 
-@onready var _principal_pivot_camera : Node3D = $PrincipalSpringArm
+@onready var _principal_pivot_camera : Node3D = $"../PrincipalSpringArm"
 @onready var _model : Node3D = $Pivot
 @onready var _timer : Timer = $Timer
+@onready var _pivot_remote_transform : Node3D = $PivotRemoteTransform
 
 var double_jump_flag : bool = false
+
+func _process(delta):
+	if not sweep_mode_flag:
+		_pivot_remote_transform.rotation.y = _model.rotation.y
+	else:
+		_model.rotation.y = _pivot_remote_transform.rotation.y
 
 func _physics_process(delta:float) -> void:
 	movement(delta)
@@ -53,14 +62,22 @@ func wall_run() -> void:
 
 func movement(delta:float) -> void:
 	if is_on_floor():
+		air_time = 0.0
+		if double_jump_flag:
+			double_jump_flag = false
 		# Handle Jump.
 		if Input.is_action_just_pressed("jump"):
 			state = player_state.JUMP
 			_timer.start()
 			velocity.y = JUMP_VELOCITY
+			double_jump_flag = true
 	elif not is_on_floor():
+		air_time += delta
 		velocity.y -= gravity * delta
+		#print(air_time)
 		#print(velocity)
+		if double_jump_flag and air_time > 0.2:
+			double_jump()
 		if velocity.y <= 0.0:
 			state = player_state.FALL
 	
@@ -78,10 +95,16 @@ func movement(delta:float) -> void:
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 func double_jump() -> void:
-	if Input.is_action_just_pressed("jump") and double_jump_flag:
+	if Input.is_action_just_pressed("jump"):
 		state = player_state.DOUBLE_JUMP
 		velocity.y = JUMP_VELOCITY
+		print("double_jump")
+		double_jump_flag = false
 
 
 func _on_timer_timeout() -> void:
 	wall_flag = false
+
+
+func _on_sweeper_sweep_signal():
+	sweep_mode_flag = !sweep_mode_flag
