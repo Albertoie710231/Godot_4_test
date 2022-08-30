@@ -17,9 +17,9 @@ func _physics_process(delta):
 
 
 func _on_area_3d_body_entered(body):
-	if body.is_in_group("Enemie"):
+	if body.is_in_group("Enemy"):
 		queue_free()
-	else:
+	elif not body.is_in_group("bodies"):
 		get_node(".").set_gravity_scale(1.0)
 		get_node(".").set_collision_layer_value(1, true)
 		get_node("Area3D").set_collision_layer_value(1, true)

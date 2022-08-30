@@ -8,7 +8,7 @@ var inertia : float = 30.0
 var air_time : float = 0.0
 var jump_velocity : float = 0.0
 var wall_flag : bool = false
-var sweep_mode_flag = false
+var sweep_mode_flag : bool = false
 var wall_normal : Vector3 = Vector3.ZERO
 # Get the gravity from the project settings to be synced with RigidDynamicBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -31,7 +31,7 @@ var state = player_state.IDLE
 
 var double_jump_flag : bool = false
 
-func _process(delta):
+func _process(_delta):
 	if not sweep_mode_flag:
 		_pivot_remote_transform.rotation.y = _model.rotation.y
 	else:

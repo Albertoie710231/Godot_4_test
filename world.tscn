@@ -54,6 +54,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, -27)
 size = Vector3(24, 20, 6.54734)
 material = SubResource("StandardMaterial3D_nokmp")
 
+[node name="CSGBox3D3" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 7.09618, 0.810994, -5.0446)
+size = Vector3(8.61928, 5.18302, 0.70922)
+material = SubResource("StandardMaterial3D_nokmp")
+
 [node name="Area3D" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
@@ -85,7 +90,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.92338, 3, -3)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.92338, 3, 4)
 
 [node name="TrashCan" parent="." instance=ExtResource("3_4kxc4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 1, 2)
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 5.15519, 2.41896, -5.56352)
 
 [node name="TrashCan2" parent="." instance=ExtResource("3_4kxc4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 1, 0)

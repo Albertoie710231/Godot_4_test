@@ -4,6 +4,7 @@ var in_range_flag : bool = false
 var body_entered_flag : bool = false
 var camera_offset_flag : bool = true
 var timeout_flag : bool = false
+var sweep_signal_flag : bool = false
 var camera_offset : Vector3 = Vector3.ZERO
 var trash_list : Array = []
 
@@ -15,35 +16,40 @@ signal sweep_signal()
 @onready var _camera : SpringArm3D = $"../PrincipalSpringArm"
 @onready var _remote_tranform_camera : RemoteTransform3D = $"../Player/PivotRemoteTransform/RemoteTransform3D"
 @onready var _pivot_remote_camera : Node3D = $"../Player/PivotRemoteTransform"
-@onready var _pivot : Node3D = $".."
+#@onready var _pivot : Node3D = $".."
 @onready var _spawn_trash : Node3D = $SpawnTrash
 @onready var _timer : Timer = $Timer
 
 func _physics_process(_delta) -> void:
 	if Input.is_action_pressed("click"):
 		if camera_offset_flag:
-			sweep_signal.emit()
 			camera_offset.x = _camera.rotation.x
 			camera_offset_flag = false
+			sweep_signal_flag = true
 		_remote_tranform_camera.rotation.x = _camera.rotation.x - camera_offset.x
 		_remote_tranform_camera.rotation.x = clamp(_remote_tranform_camera.rotation.x, deg2rad(-20), deg2rad(60))
-		_pivot_remote_camera.rotation.y = _camera.rotation.y - camera_offset.y
 		if _timer.is_stopped() and timeout_flag == false:
 			_timer.start(0.5)
 		
-		if _ray_cast.is_colliding() and _timer.get_time_left() == 0.0:
-			sweep()
+		if _timer.get_time_left() == 0.0:
+			if sweep_signal_flag:
+				sweep_signal.emit()
+				sweep_signal_flag = false
+			_pivot_remote_camera.rotation.y = _camera.rotation.y
+			_pivot_remote_camera.rotation.y = wrapf(_pivot_remote_camera.rotation.y, deg2rad(0), deg2rad(360))
+			if _ray_cast.is_colliding():
+				sweep()
 	
 	elif Input.is_action_just_released("click"):
 		if _timer.get_time_left() != 0.0:
 			shoot()
-		sweep_signal.emit()
+		if sweep_signal_flag == false:
+			sweep_signal.emit()
 		_area_collision.disabled = true
 		_remote_tranform_camera.rotation.x = 0.0
 		_remote_tranform_camera.rotation.y = 0.0
 		timeout_flag = false
 		camera_offset_flag = true
-		#print(_timer.get_time_left())
 		_timer.stop()
 
 func sweep() -> void:
@@ -52,8 +58,9 @@ func sweep() -> void:
 		if _ray_cast.get_collider().is_in_group("bodies"):
 			_ray_cast.get_collider().apply_central_impulse(_ray_cast.get_collision_normal())
 			if body_entered_flag == true:
-				_ray_cast.get_collider().set_lock_rotation_enabled(true)
 				_ray_cast.get_collider().set_linear_velocity(Vector3.ZERO)
+				_ray_cast.get_collider().set_angular_velocity(Vector3.ZERO)
+				_ray_cast.get_collider().set_lock_rotation_enabled(true)
 				var scene = PackedScene.new()
 				scene.pack(_ray_cast.get_collider())
 				trash_list.append(scene)
@@ -71,7 +78,7 @@ func shoot() -> void:
 		shoot_trash.disconnect(_spawn_trash.get_child(_spawn_trash.get_child_count()-1).shoot_trash)
 		trash_list.pop_back()
 
-func _on_area_3d_body_entered(body):
+func _on_area_3d_body_entered(_body):
 	body_entered_flag = true
 
 

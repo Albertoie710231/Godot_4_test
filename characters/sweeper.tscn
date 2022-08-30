@@ -18,7 +18,7 @@ size = Vector3(0.3, 0.3, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_k7h5i"]
 size = Vector3(1.32983, 1.43316, 0.60188)
 
-[node name="Sweeper" type="Node3D"]
+[node name="Sweeper" type="Node3D" groups=["bodies"]]
 script = ExtResource("1_hdnh7")
 
 [node name="RigidDynamicBody3D" type="RigidDynamicBody3D" parent="."]
