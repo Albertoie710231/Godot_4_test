@@ -19,7 +19,7 @@ signal sweep_signal()
 @onready var _spawn_trash : Node3D = $SpawnTrash
 @onready var _timer : Timer = $Timer
 
-func _unhandled_input(event:InputEvent) -> void:
+func _physics_process(_delta) -> void:
 	if Input.is_action_pressed("click"):
 		if camera_offset_flag:
 			sweep_signal.emit()
@@ -52,6 +52,8 @@ func sweep() -> void:
 		if _ray_cast.get_collider().is_in_group("bodies"):
 			_ray_cast.get_collider().apply_central_impulse(_ray_cast.get_collision_normal())
 			if body_entered_flag == true:
+				_ray_cast.get_collider().set_lock_rotation_enabled(true)
+				_ray_cast.get_collider().set_linear_velocity(Vector3.ZERO)
 				var scene = PackedScene.new()
 				scene.pack(_ray_cast.get_collider())
 				trash_list.append(scene)
@@ -60,17 +62,14 @@ func sweep() -> void:
 
 func shoot() -> void:
 	if trash_list:
-		var t = trash_list.back().instantiate(PackedScene.GEN_EDIT_STATE_DISABLED)
+		var t = trash_list.back().instantiate()
+		t.set_lock_rotation_enabled(false)
+		t.transform.basis = _spawn_trash.transform.basis
 		_spawn_trash.add_child(t)
-		#print(_spawn_trash.get_child(_spawn_trash.get_child_count()-1).shoot_trash)
 		shoot_trash.connect(_spawn_trash.get_child(_spawn_trash.get_child_count()-1).shoot_trash)
 		shoot_trash.emit()
 		shoot_trash.disconnect(_spawn_trash.get_child(_spawn_trash.get_child_count()-1).shoot_trash)
-		#var impulse = _spawn_trash.get_child(_spawn_trash.get_child_count()-1).transform.basis.z
-		#print(impulse)
-		#_spawn_trash.get_child(_spawn_trash.get_child_count()-1).apply_central_impulse(-impulse * 1000)
 		trash_list.pop_back()
-		#print(trash_list)
 
 func _on_area_3d_body_entered(body):
 	body_entered_flag = true

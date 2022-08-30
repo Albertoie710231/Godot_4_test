@@ -10,6 +10,7 @@ height = 1.5
 
 [node name="TrashCan" type="RigidDynamicBody3D" groups=["bodies"]]
 top_level = true
+continuous_cd = true
 script = ExtResource("1_lvfl4")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -18,3 +19,11 @@ skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CylinderShape3D_vbpt3")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3DArea" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("CylinderShape3D_vbpt3")
+disabled = true
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

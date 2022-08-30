@@ -29,7 +29,7 @@ uv1_scale = Vector3(0.2, 0.2, 0.2)
 uv1_triplanar = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_sq4kv"]
-size = Vector3(94, 1, 108)
+size = Vector3(94, 57.699, 108)
 
 [node name="World" type="Node3D"]
 script = ExtResource("1_a2261")
@@ -55,7 +55,6 @@ size = Vector3(24, 20, 6.54734)
 material = SubResource("StandardMaterial3D_nokmp")
 
 [node name="Area3D" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -23, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("BoxShape3D_sq4kv")
@@ -105,5 +104,5 @@ script = ExtResource("7_jseis")
 
 [node name="PrincipalCamera" type="Camera3D" parent="PrincipalSpringArm"]
 
-[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
 [connection signal="sweep_signal" from="Sweeper" to="Player" method="_on_sweeper_sweep_signal"]
