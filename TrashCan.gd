@@ -1,4 +1,4 @@
-extends RigidDynamicBody3D
+extends RigidBody3D
 
 var shoot : bool = false
 
@@ -10,9 +10,9 @@ func shoot_trash() -> void:
 	shoot = true
 	
 
-func _physics_process(delta):
+func _integrate_forces(state) -> void:
 	if shoot:
-		apply_force(-transform.basis.z * delta * 10000, transform.basis.z)
+		state.apply_force(-transform.basis.z * 100, transform.basis.z)
 		
 
 

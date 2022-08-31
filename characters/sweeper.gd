@@ -27,7 +27,7 @@ func _physics_process(_delta) -> void:
 			camera_offset_flag = false
 			sweep_signal_flag = true
 		_remote_tranform_camera.rotation.x = _camera.rotation.x - camera_offset.x
-		_remote_tranform_camera.rotation.x = clamp(_remote_tranform_camera.rotation.x, deg2rad(-20), deg2rad(60))
+		_remote_tranform_camera.rotation.x = clamp(_remote_tranform_camera.rotation.x, deg_to_rad(-20), deg_to_rad(60))
 		if _timer.is_stopped() and timeout_flag == false:
 			_timer.start(0.5)
 		
@@ -36,7 +36,7 @@ func _physics_process(_delta) -> void:
 				sweep_signal.emit()
 				sweep_signal_flag = false
 			_pivot_remote_camera.rotation.y = _camera.rotation.y
-			_pivot_remote_camera.rotation.y = wrapf(_pivot_remote_camera.rotation.y, deg2rad(0), deg2rad(360))
+			_pivot_remote_camera.rotation.y = wrapf(_pivot_remote_camera.rotation.y, deg_to_rad(0), deg_to_rad(360))
 			if _ray_cast.is_colliding():
 				sweep()
 	
@@ -56,7 +56,7 @@ func sweep() -> void:
 	_area_collision.disabled = false
 	if _ray_cast.get_collider():
 		if _ray_cast.get_collider().is_in_group("bodies"):
-			_ray_cast.get_collider().apply_central_impulse(_ray_cast.get_collision_normal())
+			_ray_cast.get_collider().apply_central_force(_ray_cast.get_collision_normal() * 100)
 			if body_entered_flag == true:
 				_ray_cast.get_collider().set_linear_velocity(Vector3.ZERO)
 				_ray_cast.get_collider().set_angular_velocity(Vector3.ZERO)

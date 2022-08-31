@@ -22,18 +22,18 @@ func _unhandled_input(event: InputEvent) -> void:
 	if get_node("PrincipalCamera").current == true:
 		if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 			camera_h -= event.relative.x * mouse_sensitivity
-			camera_h = wrapf(camera_h, deg2rad(0), deg2rad(360))
+			camera_h = wrapf(camera_h, deg_to_rad(0), deg_to_rad(360))
 			rotation.y = camera_h
 			camera_v -= event.relative.y * mouse_sensitivity
-			camera_v = clamp(camera_v, deg2rad(-60), deg2rad(30))
+			camera_v = clamp(camera_v, deg_to_rad(-60), deg_to_rad(30))
 			rotation.x = camera_v
 
 func _process(delta):
 	var input_dir = Input.get_vector("rotate_camera_left", "rotate_camera_right", "rotate_camera_up", "rotate_camera_down").normalized()
 	if input_dir:
 		camera_h -= input_dir.x * delta * controller_sesitivity
-		camera_h = wrapf(camera_h, deg2rad(0), deg2rad(360))
+		camera_h = wrapf(camera_h, deg_to_rad(0), deg_to_rad(360))
 		rotation.y = camera_h
 		camera_v -= input_dir.y * delta * controller_sesitivity
-		camera_v = clamp(camera_v, deg2rad(-60), deg2rad(30))
+		camera_v = clamp(camera_v, deg_to_rad(-60), deg_to_rad(30))
 		rotation.x = camera_v
