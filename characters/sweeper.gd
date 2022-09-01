@@ -20,7 +20,7 @@ signal sweep_signal()
 @onready var _spawn_trash : Node3D = $SpawnTrash
 @onready var _timer : Timer = $Timer
 
-func _physics_process(_delta) -> void:
+func _physics_process(delta) -> void:
 	if Input.is_action_pressed("click"):
 		if camera_offset_flag:
 			camera_offset.x = _camera.rotation.x
@@ -35,16 +35,24 @@ func _physics_process(_delta) -> void:
 			if sweep_signal_flag:
 				sweep_signal.emit()
 				sweep_signal_flag = false
-			_pivot_remote_camera.rotation.y = _camera.rotation.y
-			_pivot_remote_camera.rotation.y = wrapf(_pivot_remote_camera.rotation.y, deg_to_rad(0), deg_to_rad(360))
+			
 			if _ray_cast.is_colliding():
-				sweep()
+				sweep(delta)
+			else:
+				_pivot_remote_camera.rotation.y = _camera.rotation.y
+				_pivot_remote_camera.rotation.y = wrapf(_pivot_remote_camera.rotation.y, deg_to_rad(0), deg_to_rad(360))
 	
 	elif Input.is_action_just_released("click"):
 		if _timer.get_time_left() != 0.0:
 			shoot()
 		if sweep_signal_flag == false:
 			sweep_signal.emit()
+		
+		if _ray_cast.get_collider():
+			_ray_cast.get_collider().set_linear_velocity(Vector3.ZERO)
+			_ray_cast.get_collider().set_angular_velocity(Vector3.ZERO)
+			_ray_cast.get_collider().set_constant_force(Vector3.ZERO)
+		#Input.stop_joy_vibration(0)
 		_area_collision.disabled = true
 		_remote_tranform_camera.rotation.x = 0.0
 		_remote_tranform_camera.rotation.y = 0.0
@@ -52,20 +60,27 @@ func _physics_process(_delta) -> void:
 		camera_offset_flag = true
 		_timer.stop()
 
-func sweep() -> void:
+func sweep(delta:float) -> void:
+	var joypads = Input.get_connected_joypads()
+	#Input.start_joy_vibration(joypads[0],0.5,0.5,0)
 	_area_collision.disabled = false
 	if _ray_cast.get_collider():
 		if _ray_cast.get_collider().is_in_group("bodies"):
-			_ray_cast.get_collider().apply_central_force(_ray_cast.get_collision_normal() * 100)
+			look_at(_ray_cast.get_collision_point(), Vector3.UP)
+			_ray_cast.get_collider().set_constant_force(_ray_cast.get_collision_normal() * 50)
 			if body_entered_flag == true:
 				_ray_cast.get_collider().set_linear_velocity(Vector3.ZERO)
 				_ray_cast.get_collider().set_angular_velocity(Vector3.ZERO)
+				_ray_cast.get_collider().set_constant_force(Vector3.ZERO)
 				_ray_cast.get_collider().set_lock_rotation_enabled(true)
 				var scene = PackedScene.new()
 				scene.pack(_ray_cast.get_collider())
 				trash_list.append(scene)
 				_ray_cast.get_collider().queue_free()
 				body_entered_flag = false
+		else:
+			_pivot_remote_camera.rotation.y = _camera.rotation.y
+			_pivot_remote_camera.rotation.y = wrapf(_pivot_remote_camera.rotation.y, deg_to_rad(0), deg_to_rad(360))
 
 func shoot() -> void:
 	if trash_list:

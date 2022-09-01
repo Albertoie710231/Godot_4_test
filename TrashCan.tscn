@@ -8,7 +8,7 @@ height = 1.5
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_vbpt3"]
 height = 1.5
 
-[node name="TrashCan" type="RigidDynamicBody3D" groups=["bodies"]]
+[node name="TrashCan" type="RigidBody3D" groups=["bodies"]]
 top_level = true
 continuous_cd = true
 script = ExtResource("1_lvfl4")
@@ -25,5 +25,13 @@ shape = SubResource("CylinderShape3D_vbpt3")
 [node name="CollisionShape3DArea" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("CylinderShape3D_vbpt3")
 disabled = true
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[node name="Timer2" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

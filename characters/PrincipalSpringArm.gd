@@ -4,7 +4,7 @@ var camera_h = 0.0
 var camera_v = 0.0
 
 @export var mouse_sensitivity := 0.005
-@export var controller_sesitivity = 5
+@export var controller_sesitivity = 2
 
 #@onready var _spring_arm = $PrincipalSpringArm
 

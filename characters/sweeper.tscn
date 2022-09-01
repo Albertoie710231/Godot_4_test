@@ -16,12 +16,13 @@ bottom_radius = 0.1
 size = Vector3(0.3, 0.3, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_k7h5i"]
-size = Vector3(1.32983, 1.43316, 0.60188)
+size = Vector3(2.3105, 0.694623, 0.12745)
 
 [node name="Sweeper" type="Node3D" groups=["bodies"]]
 script = ExtResource("1_hdnh7")
 
 [node name="RigidDynamicBody3D" type="RigidBody3D" parent="."]
+continuous_cd = true
 freeze = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidDynamicBody3D"]
@@ -48,16 +49,16 @@ one_shot = true
 transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, -3)
 
 [node name="Area3D" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.71095)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.21935)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0.0802937)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 shape = SubResource("BoxShape3D_k7h5i")
 disabled = true
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.031)
-target_position = Vector3(0, 0, -15)
+target_position = Vector3(0, 0, -10)
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

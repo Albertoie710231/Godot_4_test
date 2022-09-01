@@ -6,7 +6,7 @@
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_xfv4i"]
 
-[node name="TrashBall" type="RigidDynamicBody3D" groups=["bodies"]]
+[node name="TrashBall" type="RigidBody3D" groups=["bodies"]]
 top_level = true
 continuous_cd = true
 script = ExtResource("1_tek2u")
@@ -23,5 +23,13 @@ shape = SubResource("SphereShape3D_xfv4i")
 [node name="CollisionShape3DArea" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("SphereShape3D_xfv4i")
 disabled = true
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[node name="Timer2" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

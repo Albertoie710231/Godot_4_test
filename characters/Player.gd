@@ -86,8 +86,12 @@ func movement(delta:float) -> void:
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var direction = (_principal_pivot_camera.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
+		if sweep_mode_flag:
+			velocity.x = direction.x * SPEED/3.0
+			velocity.z = direction.z * SPEED/3.0
+		else:
+			velocity.x = direction.x * SPEED
+			velocity.z = direction.z * SPEED
 		var look_direction = Vector2(-velocity.z, -velocity.x)
 		_model.rotation.y = lerp_angle(_model.rotation.y,look_direction.angle(),0.5)
 	else:
@@ -98,7 +102,7 @@ func double_jump() -> void:
 	if Input.is_action_just_pressed("jump"):
 		state = player_state.DOUBLE_JUMP
 		velocity.y = JUMP_VELOCITY
-		print("double_jump")
+		#rint("double_jump")
 		double_jump_flag = false
 
 
