@@ -43,17 +43,18 @@ func _physics_process(delta) -> void:
 				_pivot_remote_camera.rotation.y = wrapf(_pivot_remote_camera.rotation.y, deg_to_rad(0), deg_to_rad(360))
 	
 	elif Input.is_action_just_released("click"):
+		_area_collision.disabled = true
 		if _timer.get_time_left() != 0.0:
 			shoot()
 		if sweep_signal_flag == false:
 			sweep_signal.emit()
 		
 		if _ray_cast.get_collider():
-			_ray_cast.get_collider().set_linear_velocity(Vector3.ZERO)
-			_ray_cast.get_collider().set_angular_velocity(Vector3.ZERO)
-			_ray_cast.get_collider().set_constant_force(Vector3.ZERO)
+			if _ray_cast.get_collider().get_class() == "RigidBody3D":
+				_ray_cast.get_collider().set_linear_velocity(Vector3.ZERO)
+				_ray_cast.get_collider().set_angular_velocity(Vector3.ZERO)
+				_ray_cast.get_collider().set_constant_force(Vector3.ZERO)
 		#Input.stop_joy_vibration(0)
-		_area_collision.disabled = true
 		_remote_tranform_camera.rotation.x = 0.0
 		_remote_tranform_camera.rotation.y = 0.0
 		timeout_flag = false
