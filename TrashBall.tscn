@@ -8,6 +8,7 @@
 
 [node name="TrashBall" type="RigidBody3D" groups=["bodies"]]
 top_level = true
+collision_layer = 3
 continuous_cd = true
 script = ExtResource("1_tek2u")
 

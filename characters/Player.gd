@@ -8,7 +8,9 @@ var inertia : float = 30.0
 var air_time : float = 0.0
 var jump_velocity : float = 0.0
 var wall_flag : bool = false
+var body_flag : bool = false
 var sweep_mode_flag : bool = false
+var bodies : Array = [] 
 var wall_normal : Vector3 = Vector3.ZERO
 # Get the gravity from the project settings to be synced with RigidDynamicBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -28,14 +30,21 @@ var state = player_state.IDLE
 @onready var _model : Node3D = $Pivot
 @onready var _timer : Timer = $Timer
 @onready var _pivot_remote_transform : Node3D = $PivotRemoteTransform
+@onready var _area_bodies : Area3D = $Area3d
 
 var double_jump_flag : bool = false
 
-func _process(_delta):
-	if not sweep_mode_flag:
+func _process(_delta) -> void:
+	if not sweep_mode_flag and bodies.is_empty():
 		_pivot_remote_transform.rotation.y = _model.rotation.y
+	elif bodies:
+		_pivot_remote_transform.look_at(bodies[0].global_transform.origin)
+		_model.look_at(bodies[0].global_transform.origin)
+		_pivot_remote_transform.get_child(0).look_at(bodies[0].global_transform.origin)
 	else:
 		_model.rotation.y = _pivot_remote_transform.rotation.y
+	
+	#print(body_flag)
 
 func _physics_process(delta:float) -> void:
 	movement(delta)
@@ -112,3 +121,13 @@ func _on_timer_timeout() -> void:
 
 func _on_sweeper_sweep_signal():
 	sweep_mode_flag = !sweep_mode_flag
+
+
+func _on_area_3d_body_entered(body):
+	#body_flag = true
+	bodies.append(body)
+	#print(bodies)
+
+
+func _on_area_3d_body_exited(body):
+	bodies.remove_at(bodies.bsearch(body))

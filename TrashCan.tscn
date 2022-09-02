@@ -10,6 +10,7 @@ height = 1.5
 
 [node name="TrashCan" type="RigidBody3D" groups=["bodies"]]
 top_level = true
+collision_layer = 3
 continuous_cd = true
 script = ExtResource("1_lvfl4")
 

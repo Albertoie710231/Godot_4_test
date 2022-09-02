@@ -7,6 +7,7 @@ var timeout_flag : bool = false
 var sweep_signal_flag : bool = false
 var camera_offset : Vector3 = Vector3.ZERO
 var trash_list : Array = []
+var time : float = 0.0 
 
 signal shoot_trash()
 signal sweep_signal()
@@ -22,6 +23,11 @@ signal sweep_signal()
 
 func _physics_process(delta) -> void:
 	if Input.is_action_pressed("click"):
+		time += delta
+		var joypads = Input.get_connected_joypads()
+		if joypads:
+			#print(clampf((cos(time)+1)/2, 0.0, 1.0))
+			Input.start_joy_vibration(joypads[0],0.5,clampf((cos(20*time)+1)/2, 0.0, 1.0),0)
 		if camera_offset_flag:
 			camera_offset.x = _camera.rotation.x
 			camera_offset_flag = false
@@ -36,11 +42,12 @@ func _physics_process(delta) -> void:
 				sweep_signal.emit()
 				sweep_signal_flag = false
 			
+			_pivot_remote_camera.rotation.y = _camera.rotation.y
+			_pivot_remote_camera.rotation.y = wrapf(_pivot_remote_camera.rotation.y, deg_to_rad(0), deg_to_rad(360))
+			
 			if _ray_cast.is_colliding():
 				sweep(delta)
-			else:
-				_pivot_remote_camera.rotation.y = _camera.rotation.y
-				_pivot_remote_camera.rotation.y = wrapf(_pivot_remote_camera.rotation.y, deg_to_rad(0), deg_to_rad(360))
+			#else:
 	
 	elif Input.is_action_just_released("click"):
 		_area_collision.disabled = true
@@ -54,20 +61,19 @@ func _physics_process(delta) -> void:
 				_ray_cast.get_collider().set_linear_velocity(Vector3.ZERO)
 				_ray_cast.get_collider().set_angular_velocity(Vector3.ZERO)
 				_ray_cast.get_collider().set_constant_force(Vector3.ZERO)
-		#Input.stop_joy_vibration(0)
+		Input.stop_joy_vibration(0)
 		_remote_tranform_camera.rotation.x = 0.0
 		_remote_tranform_camera.rotation.y = 0.0
 		timeout_flag = false
 		camera_offset_flag = true
+		time = 0.0
 		_timer.stop()
 
 func sweep(delta:float) -> void:
-	var joypads = Input.get_connected_joypads()
-	#Input.start_joy_vibration(joypads[0],0.5,0.5,0)
 	_area_collision.disabled = false
 	if _ray_cast.get_collider():
 		if _ray_cast.get_collider().is_in_group("bodies"):
-			look_at(_ray_cast.get_collision_point(), Vector3.UP)
+			#look_at(_ray_cast.get_collision_point(), Vector3.UP)
 			_ray_cast.get_collider().set_constant_force(_ray_cast.get_collision_normal() * 50)
 			if body_entered_flag == true:
 				_ray_cast.get_collider().set_linear_velocity(Vector3.ZERO)
@@ -79,9 +85,9 @@ func sweep(delta:float) -> void:
 				trash_list.append(scene)
 				_ray_cast.get_collider().queue_free()
 				body_entered_flag = false
-		else:
-			_pivot_remote_camera.rotation.y = _camera.rotation.y
-			_pivot_remote_camera.rotation.y = wrapf(_pivot_remote_camera.rotation.y, deg_to_rad(0), deg_to_rad(360))
+		#else:
+			#_pivot_remote_camera.rotation.y = _camera.rotation.y
+			#_pivot_remote_camera.rotation.y = wrapf(_pivot_remote_camera.rotation.y, deg_to_rad(0), deg_to_rad(360))
 
 func shoot() -> void:
 	if trash_list:

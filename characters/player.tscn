@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dwr7h2gy7kusr"]
+[gd_scene load_steps=7 format=3 uid="uid://dwr7h2gy7kusr"]
 
 [ext_resource type="Script" path="res://characters/Player.gd" id="1_gcwwj"]
 
@@ -12,6 +12,9 @@ albedo_color = Color(0.682353, 0.541176, 0.113725, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_vv8lv"]
 material = SubResource("StandardMaterial3D_v2aw8")
 size = Vector3(0.2, 0.2, 1.5)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_cyo1e"]
+radius = 5.0
 
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
 script = ExtResource("1_gcwwj")
@@ -33,4 +36,14 @@ mesh = SubResource("BoxMesh_vv8lv")
 [node name="Timer" type="Timer" parent="."]
 wait_time = 2.5
 
+[node name="Area3d" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3d" type="CollisionShape3D" parent="Area3d"]
+shape = SubResource("SphereShape3D_cyo1e")
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="body_entered" from="Area3d" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3d" to="." method="_on_area_3d_body_exited"]
