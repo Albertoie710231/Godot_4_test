@@ -130,4 +130,12 @@ func _on_area_3d_body_entered(body):
 
 
 func _on_area_3d_body_exited(body):
+	_model.rotation.x = 0.0
+	_model.rotation.z = 0.0
+	_pivot_remote_transform.rotation.x = 0.0
+	_pivot_remote_transform.rotation.z = 0.0
+	#_pivot_remote_transform.rotation.y = 0.0
+	_pivot_remote_transform.get_child(0).rotation.x = 0.0
+	_pivot_remote_transform.get_child(0).rotation.z = 0.0
+	_pivot_remote_transform.get_child(0).rotation.y = 0.0
 	bodies.remove_at(bodies.bsearch(body))
