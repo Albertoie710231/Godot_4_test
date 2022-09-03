@@ -20,6 +20,7 @@ signal sweep_signal()
 #@onready var _pivot : Node3D = $".."
 @onready var _spawn_trash : Node3D = $SpawnTrash
 @onready var _timer : Timer = $Timer
+@onready var _player : CharacterBody3D = $"../Player"
 
 func _physics_process(delta) -> void:
 	if Input.is_action_pressed("click"):
@@ -74,7 +75,7 @@ func sweep(delta:float) -> void:
 	if _ray_cast.get_collider():
 		if _ray_cast.get_collider().is_in_group("bodies"):
 			#look_at(_ray_cast.get_collision_point(), Vector3.UP)
-			_ray_cast.get_collider().set_constant_force(_ray_cast.get_collision_normal() * 50)
+			_ray_cast.get_collider().set_constant_force(_ray_cast.get_collision_normal() * 25)
 			if body_entered_flag == true:
 				_ray_cast.get_collider().set_linear_velocity(Vector3.ZERO)
 				_ray_cast.get_collider().set_angular_velocity(Vector3.ZERO)

@@ -30,7 +30,7 @@ func _integrate_forces(state) -> void:
 		if $Timer.get_time_left() == 0.0 or state.get_angular_velocity().length() > 0.0001:
 			restore_rigid_body()
 			shoot = false
-		state.apply_force(-transform.basis.z * 100, transform.basis.z)
+		state.apply_force(-transform.basis.z * 250, transform.basis.z)
 		
 
 func _on_area_3d_body_entered(body):

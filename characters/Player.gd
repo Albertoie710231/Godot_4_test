@@ -10,7 +10,7 @@ var jump_velocity : float = 0.0
 var wall_flag : bool = false
 var body_flag : bool = false
 var sweep_mode_flag : bool = false
-var bodies : Array = [] 
+var bodies : Array = []
 var wall_normal : Vector3 = Vector3.ZERO
 # Get the gravity from the project settings to be synced with RigidDynamicBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -37,14 +37,12 @@ var double_jump_flag : bool = false
 func _process(_delta) -> void:
 	if not sweep_mode_flag and bodies.is_empty():
 		_pivot_remote_transform.rotation.y = _model.rotation.y
-	elif bodies:
+	elif bodies and bodies[0] != null:
 		_pivot_remote_transform.look_at(bodies[0].global_transform.origin)
 		_model.look_at(bodies[0].global_transform.origin)
 		_pivot_remote_transform.get_child(0).look_at(bodies[0].global_transform.origin)
 	else:
 		_model.rotation.y = _pivot_remote_transform.rotation.y
-	
-	#print(body_flag)
 
 func _physics_process(delta:float) -> void:
 	movement(delta)
@@ -126,7 +124,7 @@ func _on_sweeper_sweep_signal():
 func _on_area_3d_body_entered(body):
 	#body_flag = true
 	bodies.append(body)
-	#print(bodies)
+	print(bodies)
 
 
 func _on_area_3d_body_exited(body):
@@ -139,3 +137,4 @@ func _on_area_3d_body_exited(body):
 	_pivot_remote_transform.get_child(0).rotation.z = 0.0
 	_pivot_remote_transform.get_child(0).rotation.y = 0.0
 	bodies.remove_at(bodies.bsearch(body))
+	print(bodies)
