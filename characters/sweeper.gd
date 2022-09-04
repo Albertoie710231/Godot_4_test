@@ -10,7 +10,8 @@ var trash_list : Array = []
 var time : float = 0.0 
 
 signal shoot_trash()
-signal sweep_signal()
+signal sweep_start_signal()
+signal sweep_end_signal()
 
 @onready var _ray_cast = $RayCast3D
 @onready var _area_collision = $Area3D/CollisionShape3D
@@ -21,6 +22,10 @@ signal sweep_signal()
 @onready var _spawn_trash : Node3D = $SpawnTrash
 @onready var _timer : Timer = $Timer
 @onready var _player : CharacterBody3D = $"../Player"
+
+func _ready():
+	sweep_end_signal.connect($"../TrashInvetory".add_trash_to_menu)
+	shoot_trash.connect($"../TrashInvetory".remove_trash_of_menu)
 
 func _physics_process(delta) -> void:
 	if Input.is_action_pressed("click"):
@@ -40,7 +45,7 @@ func _physics_process(delta) -> void:
 		
 		if _timer.get_time_left() == 0.0:
 			if sweep_signal_flag:
-				sweep_signal.emit()
+				sweep_start_signal.emit()
 				sweep_signal_flag = false
 			
 			_pivot_remote_camera.rotation.y = _camera.rotation.y
@@ -55,7 +60,7 @@ func _physics_process(delta) -> void:
 		if _timer.get_time_left() != 0.0:
 			shoot()
 		if sweep_signal_flag == false:
-			sweep_signal.emit()
+			sweep_end_signal.emit()
 		
 		if _ray_cast.get_collider():
 			if _ray_cast.get_collider().get_class() == "RigidBody3D":
@@ -83,6 +88,8 @@ func sweep(delta:float) -> void:
 				_ray_cast.get_collider().set_lock_rotation_enabled(true)
 				var scene = PackedScene.new()
 				scene.pack(_ray_cast.get_collider())
+				if trash_list.size() == 5:
+					trash_list.pop_front()
 				trash_list.append(scene)
 				_ray_cast.get_collider().queue_free()
 				body_entered_flag = false

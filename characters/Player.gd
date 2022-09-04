@@ -35,14 +35,12 @@ var state = player_state.IDLE
 var double_jump_flag : bool = false
 
 func _process(_delta) -> void:
-	if not sweep_mode_flag and bodies.is_empty():
-		_pivot_remote_transform.rotation.y = _model.rotation.y
-	elif bodies and bodies[0] != null:
+	if bodies and bodies[0] != null:
 		_pivot_remote_transform.look_at(bodies[0].global_transform.origin)
 		_model.look_at(bodies[0].global_transform.origin)
 		_pivot_remote_transform.get_child(0).look_at(bodies[0].global_transform.origin)
 	else:
-		_model.rotation.y = _pivot_remote_transform.rotation.y
+		_pivot_remote_transform.rotation.y = _model.rotation.y
 
 func _physics_process(delta:float) -> void:
 	movement(delta)
@@ -117,14 +115,10 @@ func _on_timer_timeout() -> void:
 	wall_flag = false
 
 
-func _on_sweeper_sweep_signal():
-	sweep_mode_flag = !sweep_mode_flag
-
-
 func _on_area_3d_body_entered(body):
 	#body_flag = true
 	bodies.append(body)
-	print(bodies)
+	#print(bodies)
 
 
 func _on_area_3d_body_exited(body):
@@ -137,4 +131,12 @@ func _on_area_3d_body_exited(body):
 	_pivot_remote_transform.get_child(0).rotation.z = 0.0
 	_pivot_remote_transform.get_child(0).rotation.y = 0.0
 	bodies.remove_at(bodies.bsearch(body))
-	print(bodies)
+	#print(bodies)
+
+
+func _on_sweeper_sweep_start_signal():
+	sweep_mode_flag = true
+
+
+func _on_sweeper_sweep_end_signal():
+	sweep_mode_flag = false

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://wmhrk4pxprpc"]
+[gd_scene load_steps=14 format=3 uid="uid://wmhrk4pxprpc"]
 
 [ext_resource type="Texture2D" uid="uid://c5bo1wx1bic3g" path="res://texture_08.png" id="1_5kakw"]
 [ext_resource type="Script" path="res://world.gd" id="1_a2261"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dv20l538ka808" path="res://TrashBall.tscn" id="4_kqbsy"]
 [ext_resource type="PackedScene" uid="uid://dnd3m42gc1re8" path="res://characters/sweeper.tscn" id="6_t2whs"]
 [ext_resource type="Script" path="res://characters/PrincipalSpringArm.gd" id="7_jseis"]
+[ext_resource type="PackedScene" uid="uid://cvy5tyxiwhta" path="res://trash_invetory.tscn" id="8_d7jmd"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_52fv5"]
 sky_top_color = Color(0.152941, 0.490196, 0.619608, 1)
@@ -126,6 +127,10 @@ margin = 0.5
 script = ExtResource("7_jseis")
 
 [node name="PrincipalCamera" type="Camera3D" parent="PrincipalSpringArm"]
+cull_mask = 524287
+
+[node name="TrashInvetory" parent="." instance=ExtResource("8_d7jmd")]
 
 [connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
-[connection signal="sweep_signal" from="Sweeper" to="Player" method="_on_sweeper_sweep_signal"]
+[connection signal="sweep_end_signal" from="Sweeper" to="Player" method="_on_sweeper_sweep_end_signal"]
+[connection signal="sweep_start_signal" from="Sweeper" to="Player" method="_on_sweeper_sweep_start_signal"]
