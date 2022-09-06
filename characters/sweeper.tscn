@@ -16,7 +16,7 @@ bottom_radius = 0.1
 size = Vector3(0.3, 0.3, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_k7h5i"]
-size = Vector3(0.65516, 0.490682, 0.12745)
+size = Vector3(2.36076, 0.969094, 0.5)
 
 [node name="Sweeper" type="Node3D" groups=["bodies"]]
 script = ExtResource("1_hdnh7")
@@ -52,7 +52,7 @@ transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, -3)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.21935)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, -0.404109)
 shape = SubResource("BoxShape3D_k7h5i")
 disabled = true
 

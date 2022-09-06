@@ -1,0 +1,66 @@
+[gd_scene load_steps=3 format=3 uid="uid://cvy5tyxiwhta"]
+
+[ext_resource type="Script" path="res://TrashInventory.gd" id="1_c04g2"]
+[ext_resource type="PackedScene" uid="uid://s2xxwjll2ob1" path="res://3d_gui_element.tscn" id="1_x8xdy"]
+
+[node name="TrashInvetory" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_c04g2")
+
+[node name="SubViewportContainer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -144.0
+offset_top = -144.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="3DGuiElement" parent="SubViewportContainer" instance=ExtResource("1_x8xdy")]
+offset_left = -92.0
+offset_top = -72.0
+offset_right = 420.0
+offset_bottom = 440.0
+scale = Vector2(0.3, 0.3)
+
+[node name="3DGuiElement2" parent="SubViewportContainer" instance=ExtResource("1_x8xdy")]
+offset_left = -112.0
+offset_top = -72.0
+offset_right = 400.0
+offset_bottom = 440.0
+scale = Vector2(0.3, 0.3)
+
+[node name="3DGuiElement3" parent="SubViewportContainer" instance=ExtResource("1_x8xdy")]
+offset_left = -132.0
+offset_top = -72.0
+offset_right = 380.0
+offset_bottom = 440.0
+scale = Vector2(0.3, 0.3)
+
+[node name="3DGuiElement4" parent="SubViewportContainer" instance=ExtResource("1_x8xdy")]
+offset_left = -152.0
+offset_top = -72.0
+offset_right = 360.0
+offset_bottom = 440.0
+scale = Vector2(0.3, 0.3)
+
+[node name="3DGuiElement5" parent="SubViewportContainer" instance=ExtResource("1_x8xdy")]
+offset_left = -172.0
+offset_top = -72.0
+offset_right = 340.0
+offset_bottom = 440.0
+scale = Vector2(0.3, 0.3)
+
+[editable path="SubViewportContainer/3DGuiElement"]
+[editable path="SubViewportContainer/3DGuiElement2"]
+[editable path="SubViewportContainer/3DGuiElement3"]
+[editable path="SubViewportContainer/3DGuiElement4"]
+[editable path="SubViewportContainer/3DGuiElement5"]

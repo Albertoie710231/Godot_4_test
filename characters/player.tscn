@@ -13,7 +13,8 @@ albedo_color = Color(0.682353, 0.541176, 0.113725, 1)
 material = SubResource("StandardMaterial3D_v2aw8")
 size = Vector3(0.2, 0.2, 1.5)
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_cyo1e"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_kqyud"]
+height = 4.0
 radius = 5.0
 
 [node name="Player" type="CharacterBody3D" groups=["Player"]]
@@ -42,7 +43,8 @@ collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape3d" type="CollisionShape3D" parent="Area3d"]
-shape = SubResource("SphereShape3D_cyo1e")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CylinderShape3D_kqyud")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="body_entered" from="Area3d" to="." method="_on_area_3d_body_entered"]

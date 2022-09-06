@@ -19,18 +19,20 @@ func shoot_trash() -> void:
 	get_node("Area3D").set_collision_layer_value(1, false)
 	if Input.get_connected_joypads():
 		Input.start_joy_vibration(0, 1.0, 1.0, 0.07)
-	$Timer.start()
+	#$Timer.start()
 	shoot = true
 	
 
 func _integrate_forces(state) -> void:
+	#if $Timer.get_time_left() == 0.0 or state.get_angular_velocity().length() > 0.0001:
+	if state.get_angular_velocity().length() > 0.0001:
+		restore_rigid_body()
+		shoot = false
 	if shoot:
 		#if state.get_angular_velocity().length() < 0.0001:
 			#print(state.get_angular_velocity())
-		if $Timer.get_time_left() == 0.0 or state.get_angular_velocity().length() > 0.0001:
-			restore_rigid_body()
-			shoot = false
-		state.apply_force(-transform.basis.z * 250, transform.basis.z)
+		state.apply_impulse(-transform.basis.z * 50, transform.basis.z)
+		shoot = false
 		
 
 func _on_area_3d_body_entered(body):

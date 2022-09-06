@@ -5,6 +5,7 @@ var body_entered_flag : bool = false
 var camera_offset_flag : bool = true
 var timeout_flag : bool = false
 var sweep_signal_flag : bool = false
+var apply_up_force_flag : bool = false
 var camera_offset : Vector3 = Vector3.ZERO
 var trash_list : Array = []
 var time : float = 0.0 
@@ -36,6 +37,7 @@ func _physics_process(delta) -> void:
 			Input.start_joy_vibration(joypads[0],0.5,clampf((cos(20*time)+1)/2, 0.0, 1.0),0)
 		if camera_offset_flag:
 			camera_offset.x = _camera.rotation.x
+			apply_up_force_flag = true
 			camera_offset_flag = false
 			sweep_signal_flag = true
 		_remote_tranform_camera.rotation.x = _camera.rotation.x - camera_offset.x
@@ -62,11 +64,11 @@ func _physics_process(delta) -> void:
 		if sweep_signal_flag == false:
 			sweep_end_signal.emit()
 		
-		if _ray_cast.get_collider():
-			if _ray_cast.get_collider().get_class() == "RigidBody3D":
-				_ray_cast.get_collider().set_linear_velocity(Vector3.ZERO)
-				_ray_cast.get_collider().set_angular_velocity(Vector3.ZERO)
-				_ray_cast.get_collider().set_constant_force(Vector3.ZERO)
+		#if _ray_cast.get_collider():
+			#if _ray_cast.get_collider().get_class() == "RigidBody3D":
+			#	_ray_cast.get_collider().set_linear_velocity(Vector3.ZERO)
+			#	_ray_cast.get_collider().set_angular_velocity(Vector3.ZERO)
+			#	_ray_cast.get_collider().set_constant_force(Vector3.ZERO)
 		Input.stop_joy_vibration(0)
 		_remote_tranform_camera.rotation.x = 0.0
 		_remote_tranform_camera.rotation.y = 0.0
@@ -79,8 +81,11 @@ func sweep(delta:float) -> void:
 	_area_collision.disabled = false
 	if _ray_cast.get_collider():
 		if _ray_cast.get_collider().is_in_group("bodies"):
-			#look_at(_ray_cast.get_collision_point(), Vector3.UP)
-			_ray_cast.get_collider().set_constant_force(_ray_cast.get_collision_normal() * 25)
+			if apply_up_force_flag:
+				_ray_cast.get_collider().linear_velocity = Vector3(0.0,3.0,0.0)
+				apply_up_force_flag = false
+			_ray_cast.get_collider().rotation = Vector3.ZERO
+			_ray_cast.get_collider().apply_force(_ray_cast.get_collision_normal() * 25)
 			if body_entered_flag == true:
 				_ray_cast.get_collider().set_linear_velocity(Vector3.ZERO)
 				_ray_cast.get_collider().set_angular_velocity(Vector3.ZERO)

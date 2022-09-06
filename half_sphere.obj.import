@@ -1,0 +1,21 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://didotf2xpqw7o"
+path="res://.godot/imported/half_sphere.obj-c01345eab0bfab1ed3d31405bb072895.mesh"
+
+[deps]
+
+files=["res://.godot/imported/half_sphere.obj-c01345eab0bfab1ed3d31405bb072895.mesh"]
+
+source_file="res://half_sphere.obj"
+dest_files=["res://.godot/imported/half_sphere.obj-c01345eab0bfab1ed3d31405bb072895.mesh", "res://.godot/imported/half_sphere.obj-c01345eab0bfab1ed3d31405bb072895.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
