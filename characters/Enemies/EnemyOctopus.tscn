@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://bu542yseesdo6"]
+
+[ext_resource type="Script" path="res://characters/Enemies/EnemyOctopus.gd" id="1_d68ks"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ryrpa"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_0agpu"]
+material = SubResource("StandardMaterial3D_ryrpa")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wbumj"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_fj842"]
+radius = 4.0
+
+[node name="EnemyOctopus" type="CharacterBody3D" groups=["Enemy"]]
+script = ExtResource("1_d68ks")
+
+[node name="MeshInstance3d" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_0agpu")
+
+[node name="CollisionShape3d" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_wbumj")
+
+[node name="Area3d" type="Area3D" parent="."]
+
+[node name="CollisionShape3d" type="CollisionShape3D" parent="Area3d"]
+shape = SubResource("SphereShape3D_fj842")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[connection signal="body_entered" from="Area3d" to="." method="_on_area_3d_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

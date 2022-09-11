@@ -1,9 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://dnd3m42gc1re8"]
+[gd_scene load_steps=6 format=3 uid="uid://dnd3m42gc1re8"]
 
 [ext_resource type="Script" path="res://characters/sweeper.gd" id="1_hdnh7"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_x51ph"]
-size = Vector3(0.468684, 1, 2.5676)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_gykdj"]
 height = 0.5
@@ -21,14 +18,6 @@ size = Vector3(2.36076, 0.969094, 0.5)
 [node name="Sweeper" type="Node3D" groups=["bodies"]]
 script = ExtResource("1_hdnh7")
 
-[node name="RigidDynamicBody3D" type="RigidBody3D" parent="."]
-continuous_cd = true
-freeze = true
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidDynamicBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.780527)
-shape = SubResource("BoxShape3D_x51ph")
-
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0, 0, 0)
 mesh = SubResource("CylinderMesh_gykdj")
@@ -40,10 +29,6 @@ mesh = SubResource("CylinderMesh_ahg1o")
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
 transform = Transform3D(1.84732e-08, 3.9616e-08, 1, 0.906308, -0.422618, 0, 0.422618, 0.906308, -4.37114e-08, 0, 0.154689, -1.8709)
 mesh = SubResource("PrismMesh_3ilbd")
-
-[node name="Timer" type="Timer" parent="."]
-wait_time = 0.5
-one_shot = true
 
 [node name="SpawnTrash" type="Node3D" parent="."]
 transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, -3)
@@ -60,5 +45,11 @@ disabled = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.031)
 target_position = Vector3(0, 0, -5)
 
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="Timer2" type="Timer" parent="."]
+
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

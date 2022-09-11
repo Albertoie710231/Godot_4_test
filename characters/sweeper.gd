@@ -36,12 +36,12 @@ func _physics_process(delta) -> void:
 			#print(clampf((cos(time)+1)/2, 0.0, 1.0))
 			Input.start_joy_vibration(joypads[0],0.5,clampf((cos(20*time)+1)/2, 0.0, 1.0),0)
 		if camera_offset_flag:
-			camera_offset.x = _camera.rotation.x
+			#camera_offset.x = _camera.rotation.x
 			apply_up_force_flag = true
 			camera_offset_flag = false
 			sweep_signal_flag = true
-		_remote_tranform_camera.rotation.x = _camera.rotation.x - camera_offset.x
-		_remote_tranform_camera.rotation.x = clamp(_remote_tranform_camera.rotation.x, deg_to_rad(-20), deg_to_rad(60))
+		#_remote_tranform_camera.rotation.x = _camera.rotation.x - camera_offset.x
+		#_remote_tranform_camera.rotation.x = clamp(_remote_tranform_camera.rotation.x, deg_to_rad(-20), deg_to_rad(60))
 		if _timer.is_stopped() and timeout_flag == false:
 			_timer.start(0.5)
 		
@@ -97,6 +97,7 @@ func sweep(delta:float) -> void:
 					trash_list.pop_front()
 				trash_list.append(scene)
 				_ray_cast.get_collider().queue_free()
+				apply_up_force_flag = true
 				body_entered_flag = false
 		#else:
 			#_pivot_remote_camera.rotation.y = _camera.rotation.y
