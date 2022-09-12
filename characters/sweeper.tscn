@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dnd3m42gc1re8"]
+[gd_scene load_steps=7 format=3 uid="uid://dnd3m42gc1re8"]
 
 [ext_resource type="Script" path="res://characters/sweeper.gd" id="1_hdnh7"]
 
@@ -14,6 +14,9 @@ size = Vector3(0.3, 0.3, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_k7h5i"]
 size = Vector3(2.36076, 0.969094, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5kffx"]
+size = Vector3(1, 0.473651, 0.343884)
 
 [node name="Sweeper" type="Node3D" groups=["bodies"]]
 script = ExtResource("1_hdnh7")
@@ -31,7 +34,7 @@ transform = Transform3D(1.84732e-08, 3.9616e-08, 1, 0.906308, -0.422618, 0, 0.42
 mesh = SubResource("PrismMesh_3ilbd")
 
 [node name="SpawnTrash" type="Node3D" parent="."]
-transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, -3)
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, 0, 0, -4)
 
 [node name="Area3D" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.21935)
@@ -50,6 +53,13 @@ wait_time = 0.5
 one_shot = true
 
 [node name="Timer2" type="Timer" parent="."]
+
+[node name="RigidBody3d" type="RigidBody3D" parent="."]
+freeze = true
+
+[node name="CollisionShape3d" type="CollisionShape3D" parent="RigidBody3d"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.129768, -1.90109)
+shape = SubResource("BoxShape3D_5kffx")
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

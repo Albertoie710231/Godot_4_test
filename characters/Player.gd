@@ -34,6 +34,11 @@ var state = player_state.IDLE
 
 var double_jump_flag : bool = false
 
+func _input(_event) -> void:
+	if Input.is_action_just_pressed("change_focus"):
+		bodies.append(bodies.front())
+		bodies.pop_front() 
+
 func _process(_delta) -> void:
 	if bodies and bodies[0] != null:
 		_pivot_remote_transform.look_at(bodies[0].global_transform.origin)

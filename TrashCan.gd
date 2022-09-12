@@ -5,8 +5,8 @@ var shoot : bool = false
 @onready var own_collision = $Area3D
 
 func restore_rigid_body() -> void:
-	get_node(".").set_collision_layer_value(1, true)
-	#get_node(".").set_collision_layer_value(2, true)
+	#get_node(".").set_collision_layer_value(1, true)
+	get_node(".").set_collision_layer_value(2, true)
 	#get_node("Area3D").set_collision_layer_value(1, true)
 	#get_node("Area3D/CollisionShape3DArea").set_deferred("Disabled", true)
 	get_node(".").set_gravity_scale(1.0)
@@ -15,7 +15,7 @@ func shoot_trash() -> void:
 	get_node("Area3D/CollisionShape3DArea").disabled = false
 	get_node(".").set_gravity_scale(0.0)
 	#get_node(".").set_collision_layer_value(1, false)
-	#get_node(".").set_collision_layer_value(2, false)
+	get_node(".").set_collision_layer_value(2, false)
 	#get_node("Area3D").set_collision_layer_value(1, false)
 	if Input.get_connected_joypads():
 		Input.start_joy_vibration(0, 1.0, 1.0, 0.07)

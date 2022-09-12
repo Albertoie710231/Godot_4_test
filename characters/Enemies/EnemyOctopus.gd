@@ -14,7 +14,7 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y -= (gravity/6.0) * delta
 		
-	if transform.origin.y < 5.0:
+	if $RayCast3d.is_colliding():
 		velocity.y = 2.0
 
 	# Handle Jump.
