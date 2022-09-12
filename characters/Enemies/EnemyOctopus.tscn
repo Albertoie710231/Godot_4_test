@@ -14,6 +14,7 @@ material = SubResource("StandardMaterial3D_ryrpa")
 radius = 4.0
 
 [node name="EnemyOctopus" type="CharacterBody3D" groups=["Enemy"]]
+collision_layer = 3
 script = ExtResource("1_d68ks")
 
 [node name="MeshInstance3d" type="MeshInstance3D" parent="."]

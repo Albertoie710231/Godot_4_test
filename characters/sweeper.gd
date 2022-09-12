@@ -22,7 +22,7 @@ signal sweep_end_signal()
 #@onready var _pivot : Node3D = $".."
 @onready var _spawn_trash : Node3D = $SpawnTrash
 @onready var _timer : Timer = $Timer
-@onready var _player : CharacterBody3D = $"../Player"
+#@onready var _player : CharacterBody3D = $"../Player"
 
 func _ready():
 	sweep_end_signal.connect($"../TrashInvetory".add_trash_to_menu)
@@ -77,7 +77,7 @@ func _physics_process(delta) -> void:
 		time = 0.0
 		_timer.stop()
 
-func sweep(delta:float) -> void:
+func sweep(_delta:float) -> void:
 	_area_collision.disabled = false
 	if _ray_cast.get_collider():
 		if _ray_cast.get_collider().is_in_group("bodies"):

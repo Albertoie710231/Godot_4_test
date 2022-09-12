@@ -11,6 +11,7 @@ var wall_flag : bool = false
 var body_flag : bool = false
 var sweep_mode_flag : bool = false
 var bodies : Array = []
+var enemies : Array = []
 var wall_normal : Vector3 = Vector3.ZERO
 # Get the gravity from the project settings to be synced with RigidDynamicBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -30,7 +31,7 @@ var state = player_state.IDLE
 @onready var _model : Node3D = $Pivot
 @onready var _timer : Timer = $Timer
 @onready var _pivot_remote_transform : Node3D = $PivotRemoteTransform
-@onready var _area_bodies : Area3D = $Area3d
+#@onready var _area_bodies : Area3D = $Area3d
 
 var double_jump_flag : bool = false
 
@@ -40,7 +41,11 @@ func _input(_event) -> void:
 		bodies.pop_front() 
 
 func _process(_delta) -> void:
-	if bodies and bodies[0] != null:
+	if enemies:
+		_pivot_remote_transform.look_at(enemies[0].global_transform.origin)
+		_model.look_at(enemies[0].global_transform.origin)
+		_pivot_remote_transform.get_child(0).look_at(enemies[0].global_transform.origin)
+	elif bodies and bodies[0] != null and enemies == []:
 		_pivot_remote_transform.look_at(bodies[0].global_transform.origin)
 		_model.look_at(bodies[0].global_transform.origin)
 		_pivot_remote_transform.get_child(0).look_at(bodies[0].global_transform.origin)
@@ -124,7 +129,9 @@ func _on_area_3d_body_entered(body):
 	#body_flag = true
 	if body.is_in_group("Enemy"):
 		print("Enemy!")
-	bodies.append(body)
+		enemies.append(body)
+	else:
+		bodies.append(body)
 	#print(bodies)
 
 
@@ -137,8 +144,13 @@ func _on_area_3d_body_exited(body):
 	_pivot_remote_transform.get_child(0).rotation.x = 0.0
 	_pivot_remote_transform.get_child(0).rotation.z = 0.0
 	_pivot_remote_transform.get_child(0).rotation.y = 0.0
-	bodies.remove_at(bodies.bsearch(body))
-	#print(bodies)
+	
+	if body.is_in_group("Enemy"):
+		print("Quit Enemy!")
+		enemies.remove_at(enemies.bsearch(body))
+	else:
+		bodies.remove_at(bodies.bsearch(body))
+		#print(bodies)
 
 
 func _on_sweeper_sweep_start_signal():
