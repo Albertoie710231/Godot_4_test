@@ -38,10 +38,10 @@ func _integrate_forces(state) -> void:
 		
 
 func _on_area_3d_body_entered(body):
-	if body.is_in_group("Enemy"):
-		body.queue_free()
-		queue_free()
-	elif body.get_parent().get_name() == "World": 
+	#if body.is_in_group("Enemy"):
+		#body.queue_free()
+		#queue_free()
+	if body.get_parent().get_name() == "World": 
 		#if body.get_parent().get_name() != "Sweeper":
 		#print(body.get_parent().get_name())
 		restore_rigid_body()
